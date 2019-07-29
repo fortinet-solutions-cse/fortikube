@@ -14,5 +14,6 @@ bash <(curl -L https://git.io/getLatestKialiOperator) --accessible-namespaces '*
 kubectl port-forward --address 0.0.0.0 svc/kiali 20001:20001 -n istio-system 
 
 
-# Then the URL is https://10.210.9.140:20001/kiali. 
+# The URL to access Kiali is: 
+# https://10.210.9.140:20001/kiali. 
  
