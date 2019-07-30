@@ -1,5 +1,6 @@
   
 # Deploy FWB with two services (mgmt and traffic)
+
 kubectl apply -f - <<EOF  
 apiVersion: v1  
 kind: Service  
