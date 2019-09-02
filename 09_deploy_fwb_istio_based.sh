@@ -5,20 +5,6 @@ kubectl apply -f - <<EOF
 apiVersion: v1  
 kind: Service  
 metadata:  
-  name: fwb-mgmt 
-  labels:  
-    app: fwb 
-spec:  
-  ports:  
-  - name: http  
-    port: 8000  
-    targetPort: 8  
-  selector:  
-    app: fwb  
---- 
-apiVersion: v1  
-kind: Service  
-metadata:  
   name: fwb-traffic 
   labels:  
     app: fwb  
@@ -27,6 +13,7 @@ spec:
   - name: http  
     port: 8080  
     targetPort: 80  
+    protocol: TCP
   selector:  
     app: fwb  
 --- 
@@ -43,7 +30,7 @@ spec:
         version: v1  
     spec:  
       containers:  
-      - image: fortiweb-image  
+      - image: fwb-image  
         imagePullPolicy: IfNotPresent  
         name: fwb  
         ports:  
@@ -63,7 +50,7 @@ spec:
               - NET_ADMIN 
               - NET_RAW 
               - SYS_PTRACE               
-EOF 
+EOF
    
 # Deploy Ingress gateway from Istio for FWB
   
@@ -82,7 +69,7 @@ spec:
       protocol: HTTP  
     hosts:  
     - "fwb.example.com"  
-EOF 
+EOF
   
 # Deploy a VirtualService to route traffic properly
 
@@ -96,21 +83,16 @@ spec:
   - "fwb.example.com"  
   gateways:  
   - fwb-gateway  
-  http:  
-  - match: 
-    - uri:  
-        prefix: /login  
-    route:  
-    - destination:  
-        port:  
-          number: 8000  
-        host: fwb-mgmt 
-  - route: 
+  http:
+  - match:
+    - uri:
+       prefix: /  
+    route: 
     - destination: 
         port: 
           number: 8080 
         host: fwb-traffic 
-EOF 
+EOF
  
 
 # Use these host/port to access Istio Ingress
@@ -119,8 +101,8 @@ export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressga
 export INGRESS_HOST=$(kubectl get po -l istio=ingressgateway -n istio-system -o jsonpath='{.items[0].status.hostIP}') 
 
 # Access FWB (mgmt) using the service (as ClusterIP)
-curl -I 10.99.129.113:8000/login 
- 
+curl -I 10.111.198.90:8000/login 
+
 # Access FWB (mgmt) Using Istio Ingress
 curl -I -HHost:fwb.example.com ${INGRESS_HOST}:${INGRESS_PORT}/login 
 
@@ -128,6 +110,7 @@ curl -I -HHost:fwb.example.com ${INGRESS_HOST}:${INGRESS_PORT}/login
 curl -I -HHost:fwb.example.com ${INGRESS_HOST}:${INGRESS_PORT}/productpage 
 
 # Check ingress logs
-kubectl logs -f istio-ingressgateway-75ddf64567-pdlgj -n istio-system 
+kubectl logs -f istio-ingressgateway-75ddf64567-xb8vf -n istio-system 
 
- 
+# Port forward for mgmt HTTP and SSH
+kubectl port-forward --address 0.0.0.0 deploy/fwb 2008:8 2022:22 
