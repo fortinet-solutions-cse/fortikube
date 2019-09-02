@@ -4,7 +4,21 @@
 kubectl apply -f - <<EOF  
 apiVersion: v1  
 kind: Service  
-metadata:  
+metadata:
+  name: fwb-mgmt 
+  labels:  
+    app: fwb 
+spec:  
+  ports:  
+  - name: http  
+    port: 8000  
+    targetPort: 8  
+  selector:  
+    app: fwb  
+--- 
+apiVersion: v1  
+kind: Service  
+metadata:
   name: fwb-traffic 
   labels:  
     app: fwb  
@@ -86,8 +100,13 @@ spec:
   http:
   - match:
     - uri:
-       prefix: /  
+        prefix: /login  
     route: 
+    - destination: 
+        port:
+          number: 8000  
+        host: fwb-mgmt 
+  - route: 
     - destination: 
         port: 
           number: 8080 
