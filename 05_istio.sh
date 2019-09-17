@@ -17,3 +17,8 @@ kubectl get pods -n istio-system
  
 # Set automatic istio injection for every pod
 kubectl label namespace default istio-injection=enabled 
+
+# Uninstall Istio
+kubectl delete ns istio-system
+kubectl delete -f install/kubernetes/istio-demo.yaml
+for i in install/kubernetes/helm/istio-init/files/crd*yaml; do kubectl delete -f $i; done
