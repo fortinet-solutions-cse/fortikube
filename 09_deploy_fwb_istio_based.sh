@@ -67,9 +67,8 @@ spec:
       protocol: HTTP  
     hosts:  
     - "*"  
-
 EOF
-  
+
 # Deploy a VirtualService to route traffic properly
 
 kubectl apply -f - <<EOF 
@@ -134,7 +133,45 @@ spec:
         port:
           number: 8080
 EOF
-                         
+
+############################
+# FortiWeb Configuration
+############################
+
+config server-policy vserver
+  edit "vs1"
+    set interface port1
+  next
+end             
+
+config server-policy server-pool
+  edit "sp1"
+    set flag 1
+    config  pserver-list
+      edit 1
+        # Replace IP and Port with the Service you want to direct traffic to
+        set ip 10.96.66.102
+        set port 9080
+      next
+    end
+  next
+end
+
+config server-policy policy
+  edit "p1"
+    set vserver vs1
+    set service HTTP
+    set server-pool sp1
+    config  http-content-routing-list
+    end
+  next
+end
+
+############################
+#
+############################
+
+
 
 # Use these host/port to access Istio Ingress
 export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}') 
