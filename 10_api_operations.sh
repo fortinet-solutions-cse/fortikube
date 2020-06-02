@@ -32,10 +32,18 @@ kubectl create clusterrolebinding service-reader-pod \
   --serviceaccount=default:default
   
 -----
+
 # Using direct access to K8s API server
 curl -X GET $APISERVER/api --header "Authorization: Bearer $TOKEN" --insecure
 
 # Using FortiWeb acces with Open API protection
 curl -X GET https://192.168.100.40:6443/api --header "Authorization: Bearer $TOKEN" --insecure
 
+-----
+
+SQL injection test case:
+
+curl -X GET "$APISERVER/api?param=SELECT * FROM external" --header "Authorization: Bearer $TOKEN" --insecure
+
+curl -X GET "https://192.168.100.40:6443/api?param=SELECT * FROM external" --header "Authorization: Bearer $TOKEN" --insecure
 
