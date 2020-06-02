@@ -49,10 +49,16 @@ curl -X GET https://192.168.100.40:6443/api/v1/namespaces/default/pods --header 
 
 -----
 
-# SQL injection test case:
+# SQL injection test case
 
 curl -X GET "$APISERVER/api?param=SELECT * FROM external" --header "Authorization: Bearer $TOKEN" --insecure
 
 curl -X GET "https://192.168.100.40:6443/api?param=SELECT * FROM external" --header "Authorization: Bearer $TOKEN" --insecure
 
+-----
 
+# Wrong parameters test case (limit should be numeric)
+
+curl -X GET $APISERVER/api/v1/namespaces/default/pods?limit=de --header "Authorization: Bearer $TOKEN" --insecure
+
+curl -X GET https://192.168.100.40:6443/api/v1/namespaces/default/pods?limit=de --header "Authorization: Bearer $TOKEN" --insecure
