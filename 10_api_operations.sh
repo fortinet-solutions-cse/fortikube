@@ -41,9 +41,18 @@ curl -X GET https://192.168.100.40:6443/api --header "Authorization: Bearer $TOK
 
 -----
 
-SQL injection test case:
+# Pod listing 
+
+curl -X GET $APISERVER/api/v1/namespaces/default/pods --header "Authorization: Bearer $TOKEN" --insecure
+
+curl -X GET https://192.168.100.40:6443/api/v1/namespaces/default/pods --header "Authorization: Bearer $TOKEN" --insecure
+
+-----
+
+# SQL injection test case:
 
 curl -X GET "$APISERVER/api?param=SELECT * FROM external" --header "Authorization: Bearer $TOKEN" --insecure
 
 curl -X GET "https://192.168.100.40:6443/api?param=SELECT * FROM external" --header "Authorization: Bearer $TOKEN" --insecure
+
 
