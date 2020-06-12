@@ -1,0 +1,92 @@
+# Use this to deploy petstore example
+# Remove "kubectl" commands to have a proper yaml
+
+# Deploy PetStore and Service
+kubectl apply -f - <<EOF  
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: petstore
+  name: petstore
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: petstore
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: petstore
+    spec:
+      containers:
+      - image: openapitools/openapi-petstore
+        name: petstore
+        env:
+        - name: DISABLE_API_KEY
+          value: "1"
+        - name: DISABLE_OAUTH
+          value: "1"
+        - name: OPENAPI_BASE_PATH
+          value: "/v3"
+        ports:
+        - containerPort: 8080
+          name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: petstore
+  namespace: default
+  labels:
+    service: petstore
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+  selector:
+    app: petstore
+EOF
+
+  
+# Deploy Ingress gateway from Istio for FWB
+ kubectl apply -f - <<EOF  
+apiVersion: networking.istio.io/v1alpha3  
+kind: Gateway  
+metadata:  
+  name: petstore-gateway  
+spec:  
+  selector:  
+    istio: ingressgateway # use Istio default gateway implementation  
+  servers:  
+  - port:  
+      number: 80  
+      name: http  
+      protocol: HTTP  
+    hosts:  
+    - "*"  
+EOF
+
+
+# Deploy a VirtualService to route traffic properly
+kubectl apply -f - <<EOF 
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: petstore
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - petstore-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: petstore
+        port:
+          number: 8080
+EOF
