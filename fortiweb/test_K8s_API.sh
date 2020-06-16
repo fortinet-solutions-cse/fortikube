@@ -63,3 +63,13 @@ curl -X GET $APISERVER/api/v1/namespaces/default/podsWRONGCALL?limit=1 --header 
 
 curl -X GET https://192.168.100.40:6443/api/v1/namespaces/default/podsWRONGCALL?limit=1 --header "Authorization: Bearer $TOKEN" --insecure
 
+
+# #####################################
+# Rate Limiting
+# #####################################
+
+time for i in {1..1250}; do echo Attack $i; curl  -X GET $APISERVER/api?user=<your_fwb_user_token> --header "Authorization: Bearer $TOKEN" --insecure; done 2>/dev/null
+
+
+time for i in {1..1250}; do echo Attack $i; curl  -X GET https://192.168.100.40:6443/api?user=<your_fwb_user_token> --header "Authorization: Bearer $TOKEN" --insecure; done 2>/dev/null
+
