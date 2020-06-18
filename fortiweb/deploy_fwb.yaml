@@ -1,0 +1,106 @@
+# Use this to deploy FortiWeb as a container
+# Remove "kubectl" commands to have a proper yaml
+# This publishes FortiWeb traffic management via Istio Ingress
+
+# Deploy FWB with two services (mgmt and traffic)
+
+kubectl apply -f - <<EOF  
+apiVersion: v1  
+kind: Service  
+metadata:
+  name: fwb-mgmt 
+  labels:  
+    app: fwb 
+spec:  
+  ports:  
+  - name: http  
+    port: 8443  
+    targetPort: 43  
+  selector:  
+    app: fwb  
+--- 
+apiVersion: v1  
+kind: Service  
+metadata:
+  name: fwb-traffic 
+  labels:  
+    app: fwb  
+spec:  
+  ports:  
+  - name: http  
+    port: 8080  
+    targetPort: 8080  
+    protocol: TCP
+  selector:  
+    app: fwb  
+--- 
+apiVersion: extensions/v1beta1  
+kind: Deployment  
+metadata:  
+  name: fwb  
+spec:  
+  replicas: 1  
+  template:  
+    metadata:  
+      labels:  
+        app: fwb  
+        version: v1  
+    spec:  
+      containers:  
+      - image: fortiweb:6.3.4
+        imagePullPolicy: Never  
+        name: fwb  
+         
+EOF
+   
+# Deploy Ingress gateway from Istio for FWB
+  
+kubectl apply -f - <<EOF  
+apiVersion: networking.istio.io/v1alpha3  
+kind: Gateway  
+metadata:  
+  name: fwb-gateway  
+spec:  
+  selector:  
+    istio: ingressgateway # use Istio default gateway implementation  
+  servers:  
+  - port:  
+      number: 443
+      name: https
+      protocol: HTTPS
+    hosts:  
+    - "fortiweb.com"  
+    tls:
+      mode: PASSTHROUGH
+EOF
+
+# Deploy a VirtualService to route traffic properly
+
+kubectl apply -f - <<EOF 
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: fwb
+spec:
+  hosts:
+  - "fortiweb.com"
+  gateways:
+  - fwb-gateway
+  tls:
+  - match:
+    - port: 443
+      sniHosts:
+      - fortiweb.com
+    route:
+    - destination:
+        host: fwb-mgmt
+        port:
+          number: 8443
+EOF
+
+
+# Use these host/port to access Istio Ingress
+export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}') 
+export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].nodePort}') 
+export INGRESS_HOST=$(kubectl get po -l istio=ingressgateway -n istio-system -o jsonpath='{.items[0].status.hostIP}') 
+echo ${INGRESS_HOST}:${INGRESS_PORT}
