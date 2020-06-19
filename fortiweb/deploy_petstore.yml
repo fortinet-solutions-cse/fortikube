@@ -65,7 +65,7 @@ spec:
       name: http  
       protocol: HTTP  
     hosts:  
-    - "*"  
+    - petstore.com 
 EOF
 
 
@@ -77,7 +77,7 @@ metadata:
   name: petstore
 spec:
   hosts:
-  - "*"
+  - petstore.com
   gateways:
   - petstore-gateway
   http:

@@ -1,0 +1,48 @@
+# Use this to deploy petstore traffic through fortiweb as a container
+# Note this requires previous fwb and petstore deployed
+# (use deploy_fwb.fml and deploy_petstore.yml)
+#
+# Remove "kubectl" commands to have a proper yaml
+
+
+# Deploy a VirtualService to route ingress petstore trrafic toward fwb
+kubectl apply -f - <<EOF 
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: petstore-fwb
+spec:
+  hosts:
+  - petstore-fwb.com
+  gateways:
+  - petstore-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: fwb-traffic
+        port:
+          number: 8080
+EOF
+---
+
+# Update Ingress gateway to accept petstore traffic through FWB
+ kubectl apply -f - <<EOF  
+apiVersion: networking.istio.io/v1alpha3  
+kind: Gateway  
+metadata:  
+  name: petstore-gateway  
+spec:  
+  selector:  
+    istio: ingressgateway # use Istio default gateway implementation  
+  servers:  
+  - port:  
+      number: 80  
+      name: http  
+      protocol: HTTP  
+    hosts:  
+    - petstore.com 
+    - petstore-fwb.com
+EOF

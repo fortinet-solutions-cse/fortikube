@@ -69,7 +69,7 @@ spec:
       name: https
       protocol: HTTPS
     hosts:  
-    - "fortiweb.com"  
+    - fortiweb.com
     tls:
       mode: PASSTHROUGH
 EOF
@@ -83,7 +83,7 @@ metadata:
   name: fwb
 spec:
   hosts:
-  - "fortiweb.com"
+  - fortiweb.com
   gateways:
   - fwb-gateway
   tls:
@@ -99,8 +99,3 @@ spec:
 EOF
 
 
-# Use these host/port to access Istio Ingress
-export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}') 
-export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].nodePort}') 
-export INGRESS_HOST=$(kubectl get po -l istio=ingressgateway -n istio-system -o jsonpath='{.items[0].status.hostIP}') 
-echo ${INGRESS_HOST}:${INGRESS_PORT}
