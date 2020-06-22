@@ -26,6 +26,13 @@ curl -X GET "http://${INGRESS_HOST}:${INGRESS_PORT}/v3/pet/findByStatus?status=a
 # Via FortiWeb
 curl -X GET "http://192.168.100.40:8080/v3/pet/findByStatus?status=available" -H  "accept: application/json"
 
+# Direct via Istio - Using DNS
+watch curl  -X GET "http://petstore.com:31380/v3/pet/findByStatus?status=available" -H  "accept: application/json" -H "Host:petstore.com"
+
+# Through FortiWeb via Istio - Using DNS
+watch curl  -X GET "http://petstore-fwb.com:31380/v3/pet/findByStatus?status=available" -H  "accept: application/json" -H "Host:petstore-fwb.com"
+
+
 
 # #####################################
 # Test Wrong Parameters
@@ -53,6 +60,5 @@ curl -X GET "http://${INGRESS_HOST}:${INGRESS_PORT}/v3/pet/findByStatusWRONGCALL
 
 # Via FortiWeb
 curl -X GET "http://192.168.100.40:8080/v3/pet/findByStatusWRONGCALL?status=available" -H  "accept: application/json"
-
 
 
