@@ -1,3 +1,11 @@
-10.210.9.140    fortiweb.com
-10.210.9.140    petstore.com
+# Manage FWB as VM (as gw) or container (inside K8s)
+192.168.122.40  fortiweb-mgmt-vm.com
+10.210.9.140    fortiweb-mgmt-container.com
+
+# Access K8s API (with and without FWB)
+192.168.100.40  k8s-api-fwb.com
+10.210.9.140    k8s-api.com
+
+# Access PetStore (with and without FWB)
 10.210.9.140    petstore-fwb.com
+10.210.9.140    petstore.com

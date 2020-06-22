@@ -69,7 +69,7 @@ spec:
       name: https
       protocol: HTTPS
     hosts:  
-    - fortiweb.com
+    - fortiweb-mgmt-container.com
     tls:
       mode: PASSTHROUGH
 EOF
@@ -83,14 +83,14 @@ metadata:
   name: fwb
 spec:
   hosts:
-  - fortiweb.com
+  - fortiweb-mgmt-container.com
   gateways:
   - fwb-gateway
   tls:
   - match:
     - port: 443
       sniHosts:
-      - fortiweb.com
+      - fortiweb-mgmt-container.com
     route:
     - destination:
         host: fwb-mgmt
