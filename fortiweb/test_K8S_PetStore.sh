@@ -74,11 +74,10 @@ curl -X GET "http://petstore-fwb.com:31380/v3/pet/findByStatus?status=available"
 curl -X GET "http://petstore-fwb.com:31380/v3/store/inventory" -H "accept:application/json" -H "Host:petstore-fwb.com"
 
 # User A accessing correctly findByStatus api call
-curl -X GET "http://petstore-fwb.com:31380/v3/pet/findByStatus?status=available" -H "accept:application/json" -H "Host:petstore-fwb.com" -H "token:XXXXX"
+curl -X GET "http://petstore-fwb.com:31380/v3/pet/findByStatus?status=available" -H "accept:application/json" -H "Host:petstore-fwb.com" -H "token:xxxxxxxx"
 
 # User B accessing correctly store inventory
-curl -X GET "http://petstore-fwb.com:31380/v3/store/inventory?token=XXXXXX" -H "accept:application/json" -H "Host:petstore-fwb.com"
-
+curl -X GET "http://petstore-fwb.com:31380/v3/store/inventory?token=xxxxxxxx" -H "accept:application/json" -H "Host:petstore-fwb.com"
 
 # User B doing SQL Injection
-curl -X GET "http://petstore-fwb.com:31380/v3/store/inventory?token=xxxxxxxx?select%20%2A%20from%20information_schema" -H "accept:application/json" -H "Host:petstore-fwb.com"
+curl -X GET "http://petstore-fwb.com:31380/v3/store/inventory?token=xxxxxxxx&select%20%2A%20from%20information_schema" -H "accept:application/json" -H "Host:petstore-fwb.com"
