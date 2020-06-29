@@ -24,7 +24,7 @@ metadata:
   name: service-reader
 rules:
 - apiGroups: [""] # "" indicates the core API group
-  resources: ["pods"]
+  resources: ["pods", "nodes"]
   verbs: ["get", "watch", "list"]
 EOF
 
@@ -72,4 +72,31 @@ time for i in {1..1250}; do echo Attack $i; curl  -X GET $APISERVER/api?user=<yo
 
 
 time for i in {1..1250}; do echo Attack $i; curl  -X GET https://192.168.100.40:6443/api?user=<your_fwb_user_token> --header "Authorization: Bearer $TOKEN" --insecure; done 2>/dev/null
+
+
+# #####################################
+# User A accessing correctly pods
+# #####################################
+
+curl -X GET "https://192.168.100.40:6443/api/v1/namespaces/default/pods?token=xxxxxxxxxx" --header "Authorization: Bearer $TOKEN" --insecure
+
+
+# #####################################
+# User B accessing correctly nodes
+# #####################################
+
+curl -X GET "https://192.168.100.40:6443/api/v1/nodes?token=xxxxxxxxxxxx" --hader "Authorization: Bearer $TOKEN" --insecure
+
+
+# #####################################
+# SQL Injection (with user token)
+# #####################################
+
+curl -X GET "$APISERVER/api/v1/namespaces/default/pods?select%20%2A%20from%20information_schema" --header "Authorization: Bearer $TOKEN" --insecure
+
+
+curl -X GET "https://192.168.100.40:6443/api/v1/namespaces/default/pods?token=xxxxxxxx&select%20%2A%20from%20information_schema" --header "Authorization: Bearer $TOKEN" --insecure
+
+
+
 
