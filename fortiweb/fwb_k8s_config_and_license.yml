@@ -1,0 +1,49 @@
+kubectl apply -f - <<EOF  
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+  namespace: default
+data:
+  fwb_config: |-
+    config system global
+    set timezone 10
+    end
+
+---
+
+apiVersion: v1  
+kind: Pod  
+metadata:  
+  name: fortiweb-cfgmaps  
+spec:  
+  containers:  
+  - name: fortiweb-cfgmaps
+    image: fwb-image
+    imagePullPolicy: Never  
+    volumeMounts:
+    - name: data
+      mountPath: /data/config
+  volumes:
+  - name: data
+    configMap:
+      name: config
+
+---
+
+apiVersion: v1  
+kind: Service  
+metadata:
+  name: fortiweb-cfgmaps-mgmt 
+  labels:  
+    app: fortiweb-cfgmaps 
+spec:  
+  ports:  
+  - name: http  
+    port: 8008  
+    targetPort: 80 
+  selector:  
+    app: fortiweb-cfgmaps  
+
+EOF
