@@ -78,14 +78,14 @@ time for i in {1..1250}; do echo Attack $i; curl  -X GET https://192.168.100.40:
 # User A accessing correctly pods
 # #####################################
 
-curl -X GET "https://192.168.100.40:6443/api/v1/namespaces/default/pods?token=xxxxxxxxxx" --header "Authorization: Bearer $TOKEN" --insecure
+curl -X GET "https://192.168.100.40:6443/api/v1/namespaces/default/pods?token=37OGLQ384kc3qXBVQ3k4jv2HGfQ3j2H2j66QdPx0" --header "Authorization: Bearer $TOKEN" --insecure
 
 
 # #####################################
 # User B accessing correctly nodes
 # #####################################
 
-curl -X GET "https://192.168.100.40:6443/api/v1/nodes?token=xxxxxxxxxxxx" --hader "Authorization: Bearer $TOKEN" --insecure
+curl -X GET "https://192.168.100.40:6443/api/v1/nodes?token=3UljaIC59oDhrVh5U924rHgQAAW6K41s1El7f0vQ" --hader "Authorization: Bearer $TOKEN" --insecure
 
 
 # #####################################
@@ -95,7 +95,7 @@ curl -X GET "https://192.168.100.40:6443/api/v1/nodes?token=xxxxxxxxxxxx" --hade
 curl -X GET "$APISERVER/api/v1/namespaces/default/pods?select%20%2A%20from%20information_schema" --header "Authorization: Bearer $TOKEN" --insecure
 
 
-curl -X GET "https://192.168.100.40:6443/api/v1/namespaces/default/pods?token=xxxxxxxx&select%20%2A%20from%20information_schema" --header "Authorization: Bearer $TOKEN" --insecure
+curl -X GET "https://192.168.100.40:6443/api/v1/namespaces/default/pods?token=37OGLQ384kc3qXBVQ3k4jv2HGfQ3j2H2j66QdPx0&select%20%2A%20from%20information_schema" --header "Authorization: Bearer $TOKEN" --insecure
 
 
 
