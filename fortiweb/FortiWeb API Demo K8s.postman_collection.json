@@ -1,0 +1,356 @@
+{
+	"info": {
+		"_postman_id": "15460fa0-1375-40a3-b40c-4f750b96962b",
+		"name": "FortiWeb API Demo K8s",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Wrong Parameter",
+			"item": [
+				{
+					"name": "K8s API",
+					"item": [
+						{
+							"name": "Get Pods K8s API - No FortiWeb",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{TOKEN}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://k8s-api.com:6443/api/v1/namespaces/default/pods?limit=1",
+									"protocol": "https",
+									"host": [
+										"k8s-api",
+										"com"
+									],
+									"port": "6443",
+									"path": [
+										"api",
+										"v1",
+										"namespaces",
+										"default",
+										"pods"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Pods K8s API - No FortiWeb - Wrong Parameter",
+							"request": {
+								"auth": {
+									"type": "bearer"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": ""
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{TOKEN}}"
+									}
+								],
+								"url": {
+									"raw": "https://k8s-api.com:6443/api/v1/namespaces/default/pods?limit=WRONG",
+									"protocol": "https",
+									"host": [
+										"k8s-api",
+										"com"
+									],
+									"port": "6443",
+									"path": [
+										"api",
+										"v1",
+										"namespaces",
+										"default",
+										"pods"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "WRONG"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Pods K8s API - With FortiWeb - Wrong Parameter",
+							"request": {
+								"auth": {
+									"type": "bearer"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": ""
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{TOKEN}}"
+									}
+								],
+								"url": {
+									"raw": "https://k8s-api-fwb.com:6443/api/v1/namespaces/default/pods?limit=WRONG",
+									"protocol": "https",
+									"host": [
+										"k8s-api-fwb",
+										"com"
+									],
+									"port": "6443",
+									"path": [
+										"api",
+										"v1",
+										"namespaces",
+										"default",
+										"pods"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "WRONG"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Pods K8s API - With FortiWeb",
+							"request": {
+								"auth": {
+									"type": "bearer"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "",
+										"type": "text",
+										"value": ""
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{TOKEN}}"
+									}
+								],
+								"url": {
+									"raw": "https://k8s-api-fwb.com:6443/api/v1/namespaces/default/pods?limit=1",
+									"protocol": "https",
+									"host": [
+										"k8s-api-fwb",
+										"com"
+									],
+									"port": "6443",
+									"path": [
+										"api",
+										"v1",
+										"namespaces",
+										"default",
+										"pods"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "PetStore API",
+					"item": [
+						{
+							"name": "Get Pets API - No FortiWeb",
+							"request": {
+								"auth": {
+									"type": "bearer"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Host",
+										"type": "text",
+										"value": "petstore.com"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{TOKEN}}"
+									}
+								],
+								"url": {
+									"raw": "http://petstore.com:31380/pet/findByStatus?status=available",
+									"protocol": "http",
+									"host": [
+										"petstore",
+										"com"
+									],
+									"port": "31380",
+									"path": [
+										"pet",
+										"findByStatus"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "available"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Pets API - No FortiWeb - Wrong Parameter",
+							"request": {
+								"auth": {
+									"type": "bearer"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Host",
+										"type": "text",
+										"value": "petstore.com"
+									},
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{TOKEN}}"
+									}
+								],
+								"url": {
+									"raw": "http://petstore.com:31380/pet/findByStatus?status=WRONG",
+									"protocol": "http",
+									"host": [
+										"petstore",
+										"com"
+									],
+									"port": "31380",
+									"path": [
+										"pet",
+										"findByStatus"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "WRONG"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Pets API - With FortiWeb - Wrong Parameter",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{TOKEN}}"
+									},
+									{
+										"key": "Host",
+										"value": "petstore-fwb.com",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://petstore-fwb.com:31380/pet/findByStatus?status=WRONG",
+									"protocol": "http",
+									"host": [
+										"petstore-fwb",
+										"com"
+									],
+									"port": "31380",
+									"path": [
+										"pet",
+										"findByStatus"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "WRONG"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Pets API - With FortiWeb",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{TOKEN}}"
+									},
+									{
+										"key": "Host",
+										"type": "text",
+										"value": "petstore-fwb.com"
+									}
+								],
+								"url": {
+									"raw": "http://petstore-fwb.com:31380/pet/findByStatus?status=available",
+									"protocol": "http",
+									"host": [
+										"petstore-fwb",
+										"com"
+									],
+									"port": "31380",
+									"path": [
+										"pet",
+										"findByStatus"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "available"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
