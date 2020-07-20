@@ -100,11 +100,6 @@
 								"method": "GET",
 								"header": [
 									{
-										"key": "",
-										"type": "text",
-										"value": ""
-									},
-									{
 										"key": "Authorization",
 										"type": "text",
 										"value": "Bearer {{TOKEN}}"
@@ -198,11 +193,6 @@
 										"key": "Host",
 										"type": "text",
 										"value": "petstore.com"
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{TOKEN}}"
 									}
 								],
 								"url": {
@@ -239,11 +229,6 @@
 										"key": "Host",
 										"type": "text",
 										"value": "petstore.com"
-									},
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{TOKEN}}"
 									}
 								],
 								"url": {
@@ -273,11 +258,6 @@
 							"request": {
 								"method": "GET",
 								"header": [
-									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{TOKEN}}"
-									},
 									{
 										"key": "Host",
 										"value": "petstore-fwb.com",
@@ -312,11 +292,6 @@
 								"method": "GET",
 								"header": [
 									{
-										"key": "Authorization",
-										"type": "text",
-										"value": "Bearer {{TOKEN}}"
-									},
-									{
 										"key": "Host",
 										"type": "text",
 										"value": "petstore-fwb.com"
@@ -339,6 +314,162 @@
 											"key": "status",
 											"value": "available"
 										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "API access per user",
+			"item": [
+				{
+					"name": "PetStore API",
+					"item": [
+						{
+							"name": "User A accessing Inventory - Denied",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Host",
+										"type": "text",
+										"value": "petstore-fwb.com"
+									},
+									{
+										"key": "token",
+										"value": "37OGLQ384kc3qXBVQ3k4jv2HGfQ3j2H2j66QdPx0",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://petstore-fwb.com:31380/store/inventory",
+									"protocol": "http",
+									"host": [
+										"petstore-fwb",
+										"com"
+									],
+									"port": "31380",
+									"path": [
+										"store",
+										"inventory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User B accessing Inventory - Granted",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Host",
+										"type": "text",
+										"value": "petstore-fwb.com"
+									},
+									{
+										"key": "token",
+										"type": "text",
+										"value": "3UljaIC59oDhrVh5U924rHgQAAW6K41s1El7f0vQ"
+									}
+								],
+								"url": {
+									"raw": "http://petstore-fwb.com:31380/store/inventory",
+									"protocol": "http",
+									"host": [
+										"petstore-fwb",
+										"com"
+									],
+									"port": "31380",
+									"path": [
+										"store",
+										"inventory"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "K8s API",
+					"item": [
+						{
+							"name": "User A accessing nodes - Denied",
+							"request": {
+								"auth": {
+									"type": "bearer"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{TOKEN}}"
+									},
+									{
+										"key": "token",
+										"value": "37OGLQ384kc3qXBVQ3k4jv2HGfQ3j2H2j66QdPx0",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://k8s-api-fwb.com:6443/api/v1/nodes",
+									"protocol": "https",
+									"host": [
+										"k8s-api-fwb",
+										"com"
+									],
+									"port": "6443",
+									"path": [
+										"api",
+										"v1",
+										"nodes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User B accessing nodes - Granted",
+							"request": {
+								"auth": {
+									"type": "bearer"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "Bearer {{TOKEN}}"
+									},
+									{
+										"key": "token",
+										"value": "3UljaIC59oDhrVh5U924rHgQAAW6K41s1El7f0vQ",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://k8s-api-fwb.com:6443/api/v1/nodes",
+									"protocol": "https",
+									"host": [
+										"k8s-api-fwb",
+										"com"
+									],
+									"port": "6443",
+									"path": [
+										"api",
+										"v1",
+										"nodes"
 									]
 								}
 							},
