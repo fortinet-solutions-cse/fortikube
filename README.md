@@ -1,5 +1,7 @@
 # fortikube
 
+(Not maintained anymore)
+
 This repository contains scripts and guides to bring up Fortinet demos on Kubernetes
 
 Please treat the scripts as non executable files, they are like lazydog guides for humans.
